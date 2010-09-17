@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Plot test</title>
+	<link rel="stylesheet" href="../../style/main.css" type="text/css">
+  <script type="text/javascript" src="vendor/protovis/protovis-r3.2.js"></script>
+  
+</head>
+<body>
+<div id="pie">This is a div called "pie", this text will be replaced by a plot.</div>
+<div id="bar">This div is called "bar", this text won't be replaced by a plot because the plot call sets a canvas id<pre> bar(data, "bar2");</pre></div>
+<div id="bar2">This is a div called "bar2", this text is replaced.</div>
+<div id="area">This is a div called "area", this text is replaced.</div>
+</body>
+<script src="vendor/couchapp/loader.js"></script>
+<script type="text/javascript" src="vendor/plots/plots.js"></script>
+<script type="text/javascript">
+
+$db = $.couch.db("plots");
+
+function plotX(data) {  
+  pie(data);
+  bar(data, "bar2", ['John', 'Paul', 'George', 'Ringo']);
+};
+
+function plotXY(data) {
+  area(data);
+};
+
+// TODO: make the plot function an argument to the showData calls and send options to that call
+
+function showXData() {
+  $db.view("plots/size", { 
+    'reduce':false,
+    success: function(data) { 
+      var element = $("#data");
+      var values = [];
+      for (i in data.rows) {  
+        values.push(data.rows[i].value);
+      }
+      plotX(values);
+    }
+  });
+}
+
+function showXYData() {
+  $db.view("plots/freq", { 
+    success: function(data) { 
+      var values = [];
+      for (i in data.rows) {
+        values.push(data.rows[i].value);
+      }
+      values.sort(function sort_dicts(a,b){return a.x - b.x});
+      plotXY(values);
+    }
+  });
+}
+
+$(document).ready(function() {   
+  showXData(); 
+  showXYData(); 
+});
+</script>
+</html>

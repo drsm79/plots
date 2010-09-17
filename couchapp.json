@@ -1,0 +1,4 @@
+{
+    "name": "Plots",
+    "description": "Plots is a simple CouchApp that allows you to plot, using protovis, data from your views. "
+}
