@@ -1,4 +1,5 @@
-function pie(data, canvas) {  
+function pie(data, canvas, labels) {
+   
   var w = 300,
       h = 300,
       r = w / 2,
@@ -20,7 +21,13 @@ function pie(data, canvas) {
     .anchor("center").add(pv.Label)
       .visible(function(d) d > .15)
       .textAngle(0)
-      .text(function(d) d.toFixed(2));
+      .text(function(d) {
+        if (labels) {
+          return labels[this.index];
+        } else {
+          return d.toFixed(2);
+        }
+      });
   vis.render();
 };
 
