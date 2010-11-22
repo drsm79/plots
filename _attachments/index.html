@@ -10,11 +10,7 @@
   
 </head>
 <body>
-<div id="pie">This is a div called "pie", this text will be replaced by a plot.</div>
-<div id="pie2">This is a div called "pie", this text will be replaced by a plot.</div>
-<div id="bar">This div is called "bar", this text won't be replaced by a plot because the plot call sets a canvas id<pre> bar(data, "bar2");</pre></div>
-<div id="bar2">This is a div called "bar2", this text is replaced.</div>
-<div id="area">This is a div called "area", this text is replaced.</div>
+<div id="container"><h1>Plots container</h1></div>
 </body>
 <script src="vendor/couchapp/loader.js"></script>
 <script type="text/javascript" src="vendor/plots/plots.js"></script>
@@ -62,8 +58,15 @@ function showXYData() {
 }
 
 $(document).ready(function() {   
+  // Dynamically generate the plot areas
+  $("#container").append("<div id='pie'>This is a div called 'pie', this text will be replaced by a plot.</div>");
+  $("#container").append("<div id='pie2'>This is a div called 'pie', this text will be replaced by a plot.</div>");
+  $("#container").append("<div id='bar'>This div is called 'bar', this text won't be replaced by a plot because the plot call sets a canvas id<pre> bar(data, 'bar2');</pre></div>");
+  $("#container").append("<div id='bar2'>This is a div called 'bar2', this text is replaced.</div>");
+  $("#container").append("<div id='area'>This is a div called 'area', this text is replaced.</div>");
+  // Populate with plots
   showXData(); 
-  showXYData(); 
+  showXYData();
 });
 </script>
 </html>

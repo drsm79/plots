@@ -8,18 +8,18 @@ function pie(data, canvas, labels) {
       .canvas(canvas || 'pie')
       .width(w)
       .height(w);
+      
   vis.add(pv.Wedge)
       .data(data.sort(pv.reverseOrder))
       .bottom(w / 2)
       .left(w / 2)
-
       .innerRadius(r - 40)
       .outerRadius(r)
       .angle(a)
-      .event("mouseover", function() this.innerRadius(0))
-      .event("mouseout", function() this.innerRadius(r - 40))
-    .anchor("center").add(pv.Label)
-      .visible(function(d) d > .15)
+      .event("mouseover", function() {return this.innerRadius(0)})
+      .event("mouseout", function() {return this.innerRadius(r - 40)})
+      .anchor("center").add(pv.Label)
+      .visible(function(d) {return d > .15})
       .textAngle(0)
       .text(function(d) {
         if (labels) {
@@ -28,6 +28,7 @@ function pie(data, canvas, labels) {
           return d.toFixed(2);
         }
       });
+      
   vis.render();
 };
 
@@ -51,7 +52,7 @@ function bar(data, canvas, labels) {
   /* The bars. */
   var bar = vis.add(pv.Bar)
       .data(data)
-      .top(function() y(this.index))
+      .top(function() {return y(this.index);})
       .height(y.range().band)
       .left(0)
       .width(x);
@@ -59,19 +60,19 @@ function bar(data, canvas, labels) {
   /* The value label. */
   bar.anchor("right").add(pv.Label)
       .textStyle("white")
-      .text(function(d) d.toFixed(1));
+      .text(function(d) {return d.toFixed(1);});
 
   /* The variable label. */
   bar.anchor("left").add(pv.Label)
       .textMargin(5)
       .textAlign("right")
-      .text(function() labels[this.index]);
+      .text(function() {return labels[this.index];});
 
   /* X-axis ticks. */
   vis.add(pv.Rule)
       .data(x.ticks(5))
       .left(x)
-      .strokeStyle(function(d) d ? "rgba(255,255,255,.3)" : "#000")
+      .strokeStyle(function(d) {return d ? "rgba(255,255,255,.3)" : "#000";})
     .add(pv.Rule)
       .bottom(0)
       .height(5)
@@ -83,12 +84,16 @@ function bar(data, canvas, labels) {
 }
 
 function area(data, canvas) {
+  /* TODO: support input data of the following form:
+  {series:[{data:[1,2,3,4], name:'foo'}, {data:[5,6,7,8], name:'bar'}]}
+  this will mean scaling appropriately will be a bit tougher.
+  */
 	/* Sizing and scales. */
 	var y_max = 10 * (Math.round(data[data.length - 1].y /10) + 2 );
 	
 	var w = 400,
 	    h = 200,
-	    x = pv.Scale.linear(data, function(d) d.x).range(0, w),
+	    x = pv.Scale.linear(data, function(d) {return d.x;}).range(0, w),
 	    y = pv.Scale.linear(0, y_max).range(0, h);
 
 	/* The root panel. */
@@ -105,14 +110,14 @@ function area(data, canvas) {
 	vis.add(pv.Rule)
 	    .data(y.ticks(5))
 	    .bottom(y)
-	    .strokeStyle(function(d) d ? "#eee" : "#000")
+	    .strokeStyle(function(d) {return d ? "#eee" : "#000";})
 	  .anchor("left").add(pv.Label)
 	    .text(y.tickFormat);
 
 	/* X-axis and ticks. */
 	vis.add(pv.Rule)
 	    .data(x.ticks())
-	    .visible(function(d) d)
+	    .visible(function(d) {return d;})
 	    .left(x)
 	    .bottom(-5)
 	    .height(5)
@@ -123,8 +128,8 @@ function area(data, canvas) {
 	vis.add(pv.Area)
 	    .data(data)
 	    .bottom(1)
-	    .left(function(d) x(d.x))
-	    .height(function(d) y(d.y))
+	    .left(function(d) {return x(d.x);})
+	    .height(function(d) {return y(d.y);})
 	    .fillStyle("rgb(121,173,210)")
 	  .anchor("top").add(pv.Line)
 	    .lineWidth(3);
